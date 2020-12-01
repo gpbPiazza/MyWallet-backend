@@ -5,5 +5,3 @@ export default interface User {
     password?: string,
     passwordEncrypted?: string,
 }
-
-

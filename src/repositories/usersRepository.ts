@@ -1,38 +1,36 @@
-import connection from '../database/index'
-import  User from '../interfaces/usersInterfaces'
-import bcrypt from 'bcrypt'
+import connection from '../database/index';
+import  User from '../interfaces/usersInterfaces';
+import bcrypt from 'bcrypt';
 
 export async function isEmailUnique(email: string) {
-    const user = await connection.query('SELECT * FROM users WHERE email=$1', [email])
-    return user.rows[0]
-}
+    const user = await connection.query('SELECT * FROM users WHERE email=$1', [email]);
+    return user.rows[0];
+};
 
 export async function createUser(userParams: User): Promise<User> {
     const { username, email, password } = userParams;
     const  passwordEncrypted  = bcrypt.hashSync(password, 12);
 
-    console.log(typeof(passwordEncrypted))
-    await connection.query(
-    'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',[
+    const user = await connection.query(
+    'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',[
         username, 
         email, 
         passwordEncrypted
     ]);
-
-    const user = await isEmailUnique(email)
-    return user;
+    
+    return user.rows[0];
 }
 
 export async function findUserByEmailAndPassword(email: string, password: string): Promise<User | null> {
-    const user = await isEmailUnique(email)
+    const user = await isEmailUnique(email);
     if(bcrypt.compareSync(password, user.password)){
-        return user
+        return user;
     }else {
-        return null
+        return null;
     }
 }
 
 export async function findUserById(userId: number): Promise<User> {
-    const user = await connection.query('SELECT * FROM users where id=$1', [userId])
-    return user.rows[0]
+    const user = await connection.query('SELECT * FROM users where id=$1', [userId]);
+    return user.rows[0];
 }
