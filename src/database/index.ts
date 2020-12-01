@@ -2,12 +2,13 @@ import * as dotenv from 'dotenv'
 import { Pool } from 'pg'
 dotenv.config()
 
-const connection: Pool = new Pool({
+
+const connection = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  port: 5432,
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD
 })
 
-module.exports = connection
+export default connection

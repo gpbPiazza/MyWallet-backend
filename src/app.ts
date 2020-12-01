@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 
-import { postSignUp } from './controllers/usersController'
+import { postSignUp, postSignIn } from './controllers/usersController'
 
 require('dotenv').config()
 const app = express()
@@ -16,5 +16,5 @@ app.listen(port, () => {
 })
 
 // User routes
-app.get('/api/users/sign-up', postSignUp)
-// app.post('/api/users/sign-in', usersController.postSignIn)
+app.post('/api/users/sign-up', postSignUp)
+app.post('/api/users/sign-in', postSignIn)
