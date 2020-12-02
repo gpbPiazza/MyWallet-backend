@@ -6,7 +6,8 @@
   "author": "Gabriel Pedro B Piazza <pedro.piazza99@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --no-notify src/app.ts"
+    "dev": "ts-node-dev --respawn --no-notify src/server.ts",
+    "test": "jest -i"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
@@ -30,6 +31,7 @@
     "@types/joi": "^14.3.4",
     "@types/node": "^14.14.10",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.10",
     "@types/uuid": "^8.3.0",
     "@types/uuidv4": "^5.0.0",
     "axios": "^0.21.0",
@@ -43,6 +45,8 @@
     "joi": "^17.3.0",
     "pg": "^8.5.1",
     "string-strip-html": "^6.3.0",
+    "supertest": "^6.0.1",
+    "ts-jest": "^26.4.4",
     "uuid": "^8.3.1",
     "uuidv4": "^6.2.5"
   }
