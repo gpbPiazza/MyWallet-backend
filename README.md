@@ -1,7 +1,7 @@
 
 # Projeto - MyWallet-backend
 <p align="center">
-  <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdef4ce61-4840-4448-af53-5f2eaebec8c2%2FM.png?table=block&id=e2c6dcb7-88cd-460e-9a43-53ed61e23deb&width=3700&userId=1c93da35-449e-4e62-b3f3-894be05f8dbe&cache=v2" width="175" alt="Blogium" />
+  <img src="./assets/images/logo.png" width="175" alt="Blogium" />
 </p>
   
 
