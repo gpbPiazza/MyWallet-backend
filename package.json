@@ -27,6 +27,7 @@
     "@types/cors": "^2.8.8",
     "@types/dotenv": "^8.2.0",
     "@types/eslint": "^7.2.5",
+    "@types/express-serve-static-core": "^4.17.14",
     "@types/jest": "^26.0.16",
     "@types/joi": "^14.3.4",
     "@types/node": "^14.14.10",

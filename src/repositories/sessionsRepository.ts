@@ -1,6 +1,7 @@
 import connection from '../database'
 import { v4 } from 'uuid'
 import Session from '../interfaces/sessionInterfaces'
+// import User from '../interfaces/usersInterfaces'
 
 export async function createSession (userId: number): Promise<Session> {
   const newSession = {
@@ -14,4 +15,9 @@ export async function createSession (userId: number): Promise<Session> {
       newSession.token
     ])
   return newSession
+}
+
+export async function findByToken (token: string): Promise<Session> {
+  const session = await connection.query('SELECT * FROM sessions WHERE token=$1', [token])
+  return session.rows[0]
 }

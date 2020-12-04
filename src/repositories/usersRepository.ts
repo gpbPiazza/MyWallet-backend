@@ -2,7 +2,7 @@ import connection from '../database/index'
 import User from '../interfaces/usersInterfaces'
 import bcrypt from 'bcrypt'
 
-export async function isEmailUnique (email: string) {
+export async function isEmailUnique (email: string): Promise<User | undefined> {
   const user = await connection.query('SELECT * FROM users WHERE email=$1', [email])
   return user.rows[0]
 };
