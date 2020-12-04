@@ -57,7 +57,6 @@ export async function registerAtt (transactionParams: TransactionParams, userId:
 }
 
 export async function upDateBalance (transactionParams: Transaction, userId: number): Promise<Account> {
-  console.log(transactionParams)
   const { typeTransaction, value } = transactionParams
   let newBalance = 0
 
@@ -71,11 +70,7 @@ export async function upDateBalance (transactionParams: Transaction, userId: num
     throw new Error('typeTransaction must be equal "deposit" or "withdrawal"')
   }
 
-  console.log(newBalance)
-
   const updatedAccount = await connection.query('UPDATE account SET balance=$1 WHERE "userId"=$2 RETURNING *', [newBalance, userId])
-
-  console.log(updatedAccount.rows)
 
   return updatedAccount.rows[0]
 }

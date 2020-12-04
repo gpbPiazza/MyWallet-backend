@@ -43,9 +43,8 @@ export async function postSignIn (req: Request, res: Response) {
     const { token } = await createSession(user.id)
     const userData = getUserData(user)
     res.status(202).send({ ...userData, token })
-  } catch (e) {
-    console.log(e)
-    return res.status(500).send(e)
+  } catch {
+    return res.sendStatus(500)
   }
 }
 

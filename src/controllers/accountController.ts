@@ -15,8 +15,7 @@ export async function postAccount (req: Request, res: Response): Promise<Respons
   try {
     const account = await createAccount(user.id)
     return res.status(201).send(account)
-  } catch (e) {
-    console.log(e, 'aaaaaaaaaaaaaaaaaaaa')
+  } catch {
     return res.sendStatus(500)
   }
 }
@@ -26,8 +25,7 @@ export async function getAccount (req: Request, res: Response): Promise<Response
   try {
     const account = await findAccountByUserId(user.id)
     return res.status(200).send(account)
-  } catch (e) {
-    console.log(e, 'zapeeeeeeeeeeeeeeeeeeeeeeee')
+  } catch {
     return res.sendStatus(500)
   }
 }
@@ -57,8 +55,7 @@ export async function attBalance (req: Request, res: Response): Promise<Response
     const updatedAccount = await upDateBalance(transaction, user.id)
 
     return res.status(200).send(updatedAccount)
-  } catch (e) {
-    console.log(e, 'bbbbbbbbbb')
+  } catch {
     return res.sendStatus(500)
   }
 }
@@ -70,8 +67,7 @@ export async function historyTransaction (req: Request, res: Response): Promise<
     const historyTransactions = await findHistoryTransactions(user.id)
 
     return res.status(200).send(historyTransactions)
-  } catch (e) {
-    console.log(e, 'zzzzzzzzzzzzz')
+  } catch {
     return res.sendStatus(500)
   }
 }
