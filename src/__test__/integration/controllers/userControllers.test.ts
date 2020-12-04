@@ -86,3 +86,52 @@ describe('POST /sign-in', () => {
     expect(request.status).toBe(401)
   })
 })
+// EU TENHO QUE FAZER OS TESTES PARA AS NOVAS ROTAS
+
+// describe('POST, /api/account/create', () => {
+//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+//     const headers = {
+//       email: 'zapTest@gmail.com',
+//       password: 'zapTest'
+//     }
+
+//     const request = await supertest(app).post('/api/account/create').send(body)
+//     expect(request.status).toBe(422)
+//   })
+// })
+
+// describe('GET, /api/account', () => {
+//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+//     const headers = {
+//       email: 'zapTest@gmail.com',
+//       password: 'zapTest'
+//     }
+
+//     const request = await supertest(app).post('/api/account/create').send(body)
+//     expect(request.status).toBe(422)
+//   })
+// })
+
+// describe('PUT, /api/account/update-balance', () => {
+//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+//     const headers = {
+//       email: 'zapTest@gmail.com',
+//       password: 'zapTest'
+//     }
+
+//     const request = await supertest(app).post('/api/account/create').send(body)
+//     expect(request.status).toBe(422)
+//   })
+// })
+
+// describe('GET, /api/account/transaction-history/:userId', () => {
+//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+//     const headers = {
+//       email: 'zapTest@gmail.com',
+//       password: 'zapTest'
+//     }
+
+//     const request = await supertest(app).post('/api/account/create').send(body)
+//     expect(request.status).toBe(422)
+//   })
+// })
