@@ -1,16 +1,16 @@
-import * as express from 'express'
-import { createAccount, findAccountByUserId } from '../repositories/accountRepository'
-// import User from '../interfaces/usersInterfaces'
-// import Session from '../interfaces/sessionInterfaces'
+import { Request, Response } from 'express'
 
-// declare namespace Express {
-//   export interface Request {
-//      user: User,
-//      session: Session
-//   }
-// }
+import {
+  createAccount,
+  findAccountByUserId,
+  hasBalance,
+  registerAtt,
+  upDateBalance,
+  findHistoryTransactions
+} from '../repositories/accountRepository'
+import { attBalanceSchema } from '../schemas/accountSchemas'
 
-export async function postAccount (req: any, res: express.Response): Promise<express.Response> {
+export async function postAccount (req: Request, res: Response): Promise<Response> {
   const user = req.user
   try {
     const account = await createAccount(user.id)
@@ -21,13 +21,57 @@ export async function postAccount (req: any, res: express.Response): Promise<exp
   }
 }
 
-export async function getAccount (req: any, res: express.Response): Promise<express.Response> {
+export async function getAccount (req: Request, res: Response): Promise<Response> {
   const user = req.user
   try {
     const account = await findAccountByUserId(user.id)
     return res.status(200).send(account)
   } catch (e) {
     console.log(e, 'zapeeeeeeeeeeeeeeeeeeeeeeee')
+    return res.sendStatus(500)
+  }
+}
+
+export async function attBalance (req: Request, res: Response): Promise<Response> {
+  const user = req.user
+  const transcritionParams = req.body
+
+  const { error } = attBalanceSchema.validate(transcritionParams)
+  if (error) {
+    return res.status(400).send({ error: error.details[0].message })
+  }
+
+  try {
+    const account = await findAccountByUserId(user.id)
+    if (!account) {
+      return res.status(401).send({ error: "Account doesn't exist" })
+    }
+
+    const enoughBalance = await hasBalance(transcritionParams, user.id)
+    if (!enoughBalance) {
+      return res.status(401).send({ error: "Account doesn't have enought balance" })
+    }
+
+    const transaction = await registerAtt(transcritionParams, user.id)
+
+    const updatedAccount = await upDateBalance(transaction, user.id)
+
+    return res.status(200).send(updatedAccount)
+  } catch (e) {
+    console.log(e, 'bbbbbbbbbb')
+    return res.sendStatus(500)
+  }
+}
+
+export async function historyTransaction (req: Request, res: Response): Promise<Response> {
+  const user = req.user
+
+  try {
+    const historyTransactions = await findHistoryTransactions(user.id)
+
+    return res.status(200).send(historyTransactions)
+  } catch (e) {
+    console.log(e, 'zzzzzzzzzzzzz')
     return res.sendStatus(500)
   }
 }

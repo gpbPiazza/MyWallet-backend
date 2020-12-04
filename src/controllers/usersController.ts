@@ -1,10 +1,10 @@
-import express from 'express'
+import { Request, Response } from 'express'
 import User from '../interfaces/usersInterfaces'
 import { signUpSchema, signInSchema } from '../schemas/userSchemas'
 import { isEmailUnique, createUser, findUserByEmailAndPassword } from '../repositories/usersRepository'
 import { createSession } from '../repositories/sessionsRepository'
 
-export async function postSignUp (req: express.Request, res: express.Response) {
+export async function postSignUp (req: Request, res: Response) {
   const userParams = req.body
 
   const { error } = signUpSchema.validate(userParams)
@@ -26,7 +26,7 @@ export async function postSignUp (req: express.Request, res: express.Response) {
   }
 }
 
-export async function postSignIn (req: express.Request, res: express.Response) {
+export async function postSignIn (req: Request, res: Response) {
   const userParams = req.body
 
   const { error } = signInSchema.validate(userParams)

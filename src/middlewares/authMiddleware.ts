@@ -1,20 +1,9 @@
-import * as express from 'express'
+import { Request, Response, NextFunction } from 'express'
 
 import { findByToken } from '../repositories/sessionsRepository'
 import { findUserById } from '../repositories/usersRepository'
 
-// import User from '../interfaces/usersInterfaces'
-// import Session from '../interfaces/sessionInterfaces'
-
-// declare namespace Express {
-//   export interface Request {
-//      header: any,
-//      user: User,
-//      session: Session
-//   }
-// }
-
-async function authMiddleware (req: any, res: express.Response, next: express.NextFunction): Promise<express.Response | undefined> {
+async function authMiddleware (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> {
   const authHeader = req.header('Authorization')
   if (!authHeader) {
     return res.status(401).send({ error: 'Auth header not found' })
