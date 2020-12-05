@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 
-import { postSignUp, postSignIn } from './controllers/usersController'
+import { postSignUp, postSignIn, deleteSession } from './controllers/usersController'
 import { postAccount, getAccount, attBalance, historyTransaction } from './controllers/accountController'
 import authMiddleware from './middlewares/authMiddleware'
 require('dotenv').config()
@@ -14,6 +14,7 @@ app.use(cors())
 // User routes
 app.post('/api/users/sign-up', postSignUp)
 app.post('/api/users/sign-in', postSignIn)
+app.delete('/api/users/log-out', authMiddleware, deleteSession)
 
 // Account routes
 app.post('/api/account/create', authMiddleware, postAccount)

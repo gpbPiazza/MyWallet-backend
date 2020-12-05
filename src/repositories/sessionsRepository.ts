@@ -21,3 +21,8 @@ export async function findByToken (token: string): Promise<Session> {
   const session = await connection.query('SELECT * FROM sessions WHERE token=$1', [token])
   return session.rows[0]
 }
+
+export async function deleteAllSessionsById (userId: number): Promise<Session> {
+  const session = await connection.query('DELETE FROM sessions WHERE "userId"=$1', [userId])
+  return session.rows[0]
+}
