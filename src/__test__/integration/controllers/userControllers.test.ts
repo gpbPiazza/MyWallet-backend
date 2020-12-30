@@ -3,6 +3,15 @@ import supertest from 'supertest'
 import { app } from '../../../app'
 import connection from '../../../database/index'
 
+interface UserLoged {
+  id: number;
+  email: string;
+  username: string;
+  token: string;
+}
+
+let userLogEd: UserLoged
+
 async function cleanDataBase () {
   await connection.query('DELETE FROM users')
   await connection.query('DELETE FROM sessions')
@@ -73,6 +82,7 @@ describe('POST /sign-in', () => {
     }
 
     const request = await supertest(app).post('/api/users/sign-in').send(body)
+    userLogEd = request.body
     expect(request.status).toBe(202)
   })
 
@@ -87,50 +97,25 @@ describe('POST /sign-in', () => {
   })
 })
 
-// describe('POST, /api/account/create', () => {
-//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
-//     const headers = {
-//       email: 'zapTest@gmail.com',
-//       password: 'zapTest'
-//     }
+describe('DELETE /api/users/log-out', () => {
+  it('should respond with http status 401 when user does not have a session', async () => {
+    const header = { Authorization: 'Bearer ' }
 
-//     const request = await supertest(app).post('/api/account/create').send(body)
-//     expect(request.status).toBe(422)
-//   })
-// })
+    const request = await supertest(app).delete('/api/users/log-out').set(header)
+    expect(request.status).toBe(401)
+  })
 
-// describe('GET, /api/account', () => {
-//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
-//     const headers = {
-//       email: 'zapTest@gmail.com',
-//       password: 'zapTest'
-//     }
+  it('should respond with  http status 401 when user session does not exist', async () => {
+    const header = { Authorization: 'Bearer 9d808e7d-9aae-4b88-89dd-cd4c9d1366e7' }
 
-//     const request = await supertest(app).post('/api/account/create').send(body)
-//     expect(request.status).toBe(422)
-//   })
-// })
+    const request = await supertest(app).delete('/api/users/log-out').set(header)
+    expect(request.status).toBe(401)
+  })
 
-// describe('PUT, /api/account/update-balance', () => {
-//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
-//     const headers = {
-//       email: 'zapTest@gmail.com',
-//       password: 'zapTest'
-//     }
+  it('should respond with  http status 200 when user is deleted with success', async () => {
+    const header = { Authorization: `Bearer ${userLogEd.token}` }
 
-//     const request = await supertest(app).post('/api/account/create').send(body)
-//     expect(request.status).toBe(422)
-//   })
-// })
-
-// describe('GET, /api/account/transaction-history/:userId', () => {
-//   it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
-//     const headers = {
-//       email: 'zapTest@gmail.com',
-//       password: 'zapTest'
-//     }
-
-//     const request = await supertest(app).post('/api/account/create').send(body)
-//     expect(request.status).toBe(422)
-//   })
-// })
+    const request = await supertest(app).delete('/api/users/log-out').set(header)
+    expect(request.status).toBe(200)
+  })
+})
