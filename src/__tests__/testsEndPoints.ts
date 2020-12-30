@@ -10,7 +10,8 @@ interface UserLogged {
   token: string;
 }
 
-let userLoggEd: UserLogged
+let userLoggEdWithAccount: UserLogged
+let userLoggEdWithOutAccount: UserLogged
 
 async function cleanDataBase () {
   await connection.query('DELETE FROM users')
@@ -40,14 +41,22 @@ describe('POST /sign-up', () => {
   })
 
   it('should respond with  http status 201 when body are valid', async () => {
-    const body = {
+    const userWithAccount = {
       username: 'zapTest',
       email: 'zapTest@gmail.com',
       password: 'zapTest@123',
       passwordConfirmation: 'zapTest@123'
     }
 
-    const request = await supertest(app).post('/api/users/sign-up').send(body)
+    const userWithOutAccount = {
+      username: 'bob',
+      email: 'bob@gmail.com',
+      password: 'bob@123',
+      passwordConfirmation: 'bob@123'
+    }
+    await supertest(app).post('/api/users/sign-up').send(userWithOutAccount)
+
+    const request = await supertest(app).post('/api/users/sign-up').send(userWithAccount)
     expect(request.status).toBe(201)
   })
 
@@ -81,8 +90,15 @@ describe('POST /sign-in', () => {
       password: 'zapTest@123'
     }
 
+    const userWithOutAccount = {
+      email: 'bob@gmail.com',
+      password: 'bob@123'
+    }
+    const requestForSaveUser = await supertest(app).post('/api/users/sign-in').send(userWithOutAccount)
+    userLoggEdWithOutAccount = requestForSaveUser.body
+
     const request = await supertest(app).post('/api/users/sign-in').send(body)
-    userLoggEd = request.body
+    userLoggEdWithAccount = request.body
     expect(request.status).toBe(202)
   })
 
@@ -106,10 +122,33 @@ describe('POST /api/account/create', () => {
   })
 
   it('should respond with http status 201 when user is logged so he can create a account with success', async () => {
-    const header = { Authorization: `Bearer ${userLoggEd.token}` }
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
 
     const request = await supertest(app).post('/api/account/create').set(header)
     expect(request.status).toBe(201)
+  })
+})
+
+describe('GET /api/account', () => {
+  it('should respond with http status 401 when user does not have a session', async () => {
+    const header = { Authorization: 'Bearer' }
+
+    const request = await supertest(app).get('/api/account').set(header)
+    expect(request.status).toBe(401)
+  })
+
+  it('should respond with http status 404 when user dont have a account created', async () => {
+    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
+
+    const request = await supertest(app).get('/api/account').set(header)
+    expect(request.status).toBe(404)
+  })
+
+  it('should respond with http status 200 when user logged have a account created', async () => {
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
+
+    const request = await supertest(app).get('/api/account').set(header)
+    expect(request.status).toBe(200)
   })
 })
 
@@ -129,7 +168,7 @@ describe('DELETE /api/users/log-out', () => {
   })
 
   it('should respond with  http status 200 when user is deleted with success', async () => {
-    const header = { Authorization: `Bearer ${userLoggEd.token}` }
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
 
     const request = await supertest(app).delete('/api/users/log-out').set(header)
     expect(request.status).toBe(200)

@@ -24,6 +24,9 @@ export async function getAccount (req: Request, res: Response): Promise<Response
   const user = req.user
   try {
     const account = await findAccountByUserId(user.id)
+    if (!account) {
+      return res.status(404).send({ error: 'this user dont have account' })
+    }
     return res.status(200).send(account)
   } catch {
     return res.sendStatus(500)
