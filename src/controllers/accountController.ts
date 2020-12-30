@@ -67,6 +67,10 @@ export async function historyTransaction (req: Request, res: Response): Promise<
   const user = req.user
 
   try {
+    const account = await findAccountByUserId(user.id)
+    if (!account) {
+      return res.status(401).send({ error: "Account doesn't exist" })
+    }
     const historyTransactions = await findHistoryTransactions(user.id)
 
     return res.status(200).send(historyTransactions)

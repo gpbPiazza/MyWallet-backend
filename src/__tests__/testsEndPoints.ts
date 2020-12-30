@@ -203,6 +203,23 @@ describe('PUT /api/account/update-balance', () => {
   })
 })
 
+describe('GET /api/account/transaction-history/:userId', () => {
+  it('should respond with http status 200 when user have account', async () => {
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
+
+    const request = await supertest(app).get(`/api/account/transaction-history/${userLoggEdWithAccount.id}`).set(header)
+    console.log(request.body)
+    expect(request.status).toBe(200)
+  })
+
+  it('should respond with http status 401 when user dont have a account created', async () => {
+    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
+
+    const request = await supertest(app).get(`/api/account/transaction-history/${userLoggEdWithOutAccount.id}`).set(header)
+    expect(request.status).toBe(401)
+  })
+})
+
 describe('DELETE /api/users/log-out', () => {
   it('should respond with http status 401 when user does not have a session', async () => {
     const header = { Authorization: 'Bearer ' }
