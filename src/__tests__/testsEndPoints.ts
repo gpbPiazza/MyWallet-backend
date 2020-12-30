@@ -16,6 +16,7 @@ let userLoggEdWithOutAccount: UserLogged
 async function cleanDataBase () {
   await connection.query('DELETE FROM users')
   await connection.query('DELETE FROM sessions')
+  await connection.query('DELETE FROM account')
 }
 
 beforeAll(async () => {
@@ -148,6 +149,56 @@ describe('GET /api/account', () => {
     const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
 
     const request = await supertest(app).get('/api/account').set(header)
+    expect(request.status).toBe(200)
+  })
+})
+
+describe('PUT /api/account/update-balance', () => {
+  it('should respond with http status 401 when user dont have a account created', async () => {
+    const body = {
+      value: '99.00',
+      description: 'Troco do pão',
+      typeTransaction: 'withdrawal'
+    }
+    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
+
+    const request = await supertest(app).put('/api/account/update-balance').set(header).send(body)
+    expect(request.status).toBe(401)
+  })
+
+  it('should respond with http status 400 when the body value its empty', async () => {
+    const body = {
+      value: '',
+      description: 'Troco do pão',
+      typeTransaction: 'withdrawal'
+    }
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
+
+    const request = await supertest(app).put('/api/account/update-balance').set(header).send(body)
+    expect(request.status).toBe(400)
+  })
+
+  it('should respond with http status 401 when user dont have enough balance', async () => {
+    const body = {
+      value: '10.00',
+      description: 'Comprar pão',
+      typeTransaction: 'withdrawal'
+    }
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
+
+    const request = await supertest(app).put('/api/account/update-balance').set(header).send(body)
+    expect(request.status).toBe(401)
+  })
+
+  it('should respond with http status 401 when user dont have enough balance', async () => {
+    const body = {
+      value: '1000.00',
+      description: 'Salário',
+      typeTransaction: 'deposit'
+    }
+    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
+
+    const request = await supertest(app).put('/api/account/update-balance').set(header).send(body)
     expect(request.status).toBe(200)
   })
 })
