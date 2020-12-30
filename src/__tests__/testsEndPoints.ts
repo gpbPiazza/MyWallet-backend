@@ -1,16 +1,16 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest'
-import { app } from '../src/app'
-import connection from '../src/database/index'
+import { app } from '../app'
+import connection from '../database/index'
 
-interface UserLoged {
+interface UserLogged {
   id: number;
   email: string;
   username: string;
   token: string;
 }
 
-let userLogEd: UserLoged
+let userLoggEd: UserLogged
 
 async function cleanDataBase () {
   await connection.query('DELETE FROM users')
@@ -82,7 +82,7 @@ describe('POST /sign-in', () => {
     }
 
     const request = await supertest(app).post('/api/users/sign-in').send(body)
-    userLogEd = request.body
+    userLoggEd = request.body
     expect(request.status).toBe(202)
   })
 
@@ -94,6 +94,22 @@ describe('POST /sign-in', () => {
 
     const request = await supertest(app).post('/api/users/sign-in').send(body)
     expect(request.status).toBe(401)
+  })
+})
+
+describe('POST /api/account/create', () => {
+  it('should respond with http status 401 when user does not have a session', async () => {
+    const header = { Authorization: 'Bearer ' }
+
+    const request = await supertest(app).post('/api/account/create').set(header)
+    expect(request.status).toBe(401)
+  })
+
+  it('should respond with http status 201 when user is logged so he can create a account with success', async () => {
+    const header = { Authorization: `Bearer ${userLoggEd.token}` }
+
+    const request = await supertest(app).post('/api/account/create').set(header)
+    expect(request.status).toBe(201)
   })
 })
 
@@ -113,7 +129,7 @@ describe('DELETE /api/users/log-out', () => {
   })
 
   it('should respond with  http status 200 when user is deleted with success', async () => {
-    const header = { Authorization: `Bearer ${userLogEd.token}` }
+    const header = { Authorization: `Bearer ${userLoggEd.token}` }
 
     const request = await supertest(app).delete('/api/users/log-out').set(header)
     expect(request.status).toBe(200)
