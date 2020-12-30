@@ -1,7 +1,6 @@
 import connection from '../database'
 import { v4 } from 'uuid'
 import Session from '../interfaces/sessionInterfaces'
-// import User from '../interfaces/usersInterfaces'
 
 export async function createSession (userId: number): Promise<Session> {
   const newSession = {
