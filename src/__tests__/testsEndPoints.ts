@@ -11,7 +11,6 @@ interface UserLogged {
 }
 
 let userLoggEdWithAccount: UserLogged
-let userLoggEdWithOutAccount: UserLogged
 
 async function cleanDataBase () {
   await connection.query('DELETE FROM users')
@@ -91,13 +90,6 @@ describe('POST /sign-in', () => {
       password: 'zapTest@123'
     }
 
-    const userWithOutAccount = {
-      email: 'bob@gmail.com',
-      password: 'bob@123'
-    }
-    const requestForSaveUser = await supertest(app).post('/api/users/sign-in').send(userWithOutAccount)
-    userLoggEdWithOutAccount = requestForSaveUser.body
-
     const request = await supertest(app).post('/api/users/sign-in').send(body)
     userLoggEdWithAccount = request.body
     expect(request.status).toBe(202)
@@ -114,35 +106,12 @@ describe('POST /sign-in', () => {
   })
 })
 
-describe('POST /api/account/create', () => {
-  it('should respond with http status 401 when user does not have a session', async () => {
-    const header = { Authorization: 'Bearer ' }
-
-    const request = await supertest(app).post('/api/account/create').set(header)
-    expect(request.status).toBe(401)
-  })
-
-  it('should respond with http status 201 when user is logged so he can create a account with success', async () => {
-    const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
-
-    const request = await supertest(app).post('/api/account/create').set(header)
-    expect(request.status).toBe(201)
-  })
-})
-
 describe('GET /api/account', () => {
   it('should respond with http status 401 when user does not have a session', async () => {
     const header = { Authorization: 'Bearer' }
 
     const request = await supertest(app).get('/api/account').set(header)
     expect(request.status).toBe(401)
-  })
-
-  it('should respond with http status 404 when user dont have a account created', async () => {
-    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
-
-    const request = await supertest(app).get('/api/account').set(header)
-    expect(request.status).toBe(404)
   })
 
   it('should respond with http status 200 when user logged have a account created', async () => {
@@ -154,18 +123,6 @@ describe('GET /api/account', () => {
 })
 
 describe('PUT /api/account/update-balance', () => {
-  it('should respond with http status 401 when user dont have a account created', async () => {
-    const body = {
-      value: '99.00',
-      description: 'Troco do pão',
-      typeTransaction: 'withdrawal'
-    }
-    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
-
-    const request = await supertest(app).put('/api/account/update-balance').set(header).send(body)
-    expect(request.status).toBe(401)
-  })
-
   it('should respond with http status 400 when the body value its empty', async () => {
     const body = {
       value: '',
@@ -208,15 +165,7 @@ describe('GET /api/account/transaction-history/:userId', () => {
     const header = { Authorization: `Bearer ${userLoggEdWithAccount.token}` }
 
     const request = await supertest(app).get(`/api/account/transaction-history/${userLoggEdWithAccount.id}`).set(header)
-    console.log(request.body)
     expect(request.status).toBe(200)
-  })
-
-  it('should respond with http status 401 when user dont have a account created', async () => {
-    const header = { Authorization: `Bearer ${userLoggEdWithOutAccount.token}` }
-
-    const request = await supertest(app).get(`/api/account/transaction-history/${userLoggEdWithOutAccount.id}`).set(header)
-    expect(request.status).toBe(401)
   })
 })
 

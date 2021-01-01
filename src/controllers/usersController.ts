@@ -3,6 +3,7 @@ import User from '../interfaces/usersInterfaces'
 import { signUpSchema, signInSchema } from '../schemas/userSchemas'
 import { isEmailUnique, createUser, findUserByEmailAndPassword } from '../repositories/usersRepository'
 import { createSession, deleteAllSessionsById } from '../repositories/sessionsRepository'
+import { createAccount } from '../repositories/accountRepository'
 
 export async function postSignUp (req: Request, res: Response) {
   const userParams = req.body
@@ -20,7 +21,8 @@ export async function postSignUp (req: Request, res: Response) {
 
     const user = await createUser(userParams)
     const userData = getUserData(user)
-    return res.status(201).send(userData)
+    const account = await createAccount(user.id)
+    return res.status(201).send({ ...userData, account })
   } catch {
     return res.sendStatus(500)
   }

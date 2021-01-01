@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 
 import { postSignUp, postSignIn, deleteSession } from './controllers/usersController'
-import { postAccount, getAccount, attBalance, historyTransaction } from './controllers/accountController'
+import { getAccount, attBalance, historyTransaction } from './controllers/accountController'
 import authMiddleware from './middlewares/authMiddleware'
 require('dotenv').config()
 
@@ -17,7 +17,6 @@ app.post('/api/users/sign-in', postSignIn)
 app.delete('/api/users/log-out', authMiddleware, deleteSession)
 
 // Account routes
-app.post('/api/account/create', authMiddleware, postAccount)
 app.get('/api/account', authMiddleware, getAccount)
 app.put('/api/account/update-balance', authMiddleware, attBalance)
 app.get('/api/account/transaction-history/:userId', authMiddleware, historyTransaction)

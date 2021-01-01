@@ -10,16 +10,6 @@ import {
 } from '../repositories/accountRepository'
 import { attBalanceSchema } from '../schemas/accountSchemas'
 
-export async function postAccount (req: Request, res: Response): Promise<Response> {
-  const user = req.user
-  try {
-    const account = await createAccount(user.id)
-    return res.status(201).send(account)
-  } catch {
-    return res.sendStatus(500)
-  }
-}
-
 export async function getAccount (req: Request, res: Response): Promise<Response> {
   const user = req.user
   try {
