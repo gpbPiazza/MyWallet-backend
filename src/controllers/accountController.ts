@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 
 import {
-  createAccount,
   findAccountByUserId,
   hasBalance,
   registerAtt,
