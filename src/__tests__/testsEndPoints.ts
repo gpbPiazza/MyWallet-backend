@@ -16,6 +16,7 @@ async function cleanDataBase () {
   await connection.query('DELETE FROM users')
   await connection.query('DELETE FROM sessions')
   await connection.query('DELETE FROM account')
+  await connection.query('DELETE FROM transactionHistory')
 }
 
 beforeAll(async () => {
