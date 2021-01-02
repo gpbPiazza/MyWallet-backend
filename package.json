@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --no-notify src/server.ts",
-    "test": "jest -i"
+    "test": "jest -i",
+    "build": "tsc",
+    "start": "node ./dist/server.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
