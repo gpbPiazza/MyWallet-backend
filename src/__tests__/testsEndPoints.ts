@@ -16,7 +16,7 @@ async function cleanDataBase () {
   await connection.query('DELETE FROM users')
   await connection.query('DELETE FROM sessions')
   await connection.query('DELETE FROM account')
-  await connection.query('DELETE FROM transactionHistory')
+  await connection.query('DELETE FROM "transactionHistory"')
 }
 
 beforeAll(async () => {
@@ -29,12 +29,12 @@ afterAll(async () => {
 })
 
 describe('POST /sign-up', () => {
-  it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+  it('should respond with http status 422 when body password has less than 6 characters', async () => {
     const body = {
       username: 'zapTest',
       email: 'zapTest@gmail.com',
-      password: 'zapTest',
-      passwordConfirmation: 'zapTest'
+      password: 'zap',
+      passwordConfirmation: 'zap'
     }
 
     const request = await supertest(app).post('/api/users/sign-up').send(body)
@@ -48,14 +48,6 @@ describe('POST /sign-up', () => {
       password: 'zapTest@123',
       passwordConfirmation: 'zapTest@123'
     }
-
-    const userWithOutAccount = {
-      username: 'bob',
-      email: 'bob@gmail.com',
-      password: 'bob@123',
-      passwordConfirmation: 'bob@123'
-    }
-    await supertest(app).post('/api/users/sign-up').send(userWithOutAccount)
 
     const request = await supertest(app).post('/api/users/sign-up').send(userWithAccount)
     expect(request.status).toBe(201)
@@ -75,14 +67,14 @@ describe('POST /sign-up', () => {
 })
 
 describe('POST /sign-in', () => {
-  it('should respond with http status 422 when body password has less than 6 characters and dont have any numbers or especial caracters', async () => {
+  it('should respond with http status 401 when body email and password are wrong', async () => {
     const body = {
-      email: 'zapTest@gmail.com',
+      email: 'wrongEmail@gmail.com',
       password: 'zapTest'
     }
 
     const request = await supertest(app).post('/api/users/sign-in').send(body)
-    expect(request.status).toBe(422)
+    expect(request.status).toBe(401)
   })
 
   it('should respond with  http status 202 when body are valid', async () => {
