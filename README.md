@@ -12,7 +12,11 @@
 
 ### Features
 - [x] POST '/api/users/sign-up'<br>
+- [x] DELETE '/api/users/log-out'<br>
 - [x] POST '/api/users/sign-in'<br>
+- [x] GET '/api/account'<br>
+- [x] PUT '/api/account/update-balance'<br>
+- [x] GET '/api/account/transaction-history/:userId'<br>
 - [x] 'Automated testing'<br>
 - [x] 'Middleware'<br>
 - [x] Database Postgre<br>
