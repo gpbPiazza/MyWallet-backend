@@ -20,7 +20,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "ts-node-dev": "^1.0.0",
-    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.8",
     "@types/dotenv": "^8.2.0",
