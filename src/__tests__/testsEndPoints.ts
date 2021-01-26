@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest'
-import { app } from '../src/app'
-import connection from '../src/database/index'
+import { app } from '../app'
+import connection from '../database/index'
 
 interface UserLogged {
   id: number;

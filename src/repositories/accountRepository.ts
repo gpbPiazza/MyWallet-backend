@@ -62,6 +62,8 @@ export async function upDateBalance (transactionParams: Transaction, userId: num
 
   const account = await findAccountByUserId(userId)
 
+  console.log(parseFloat(account.balance))
+
   if (typeTransaction === 'deposit') {
     newBalance = parseFloat(account.balance) + parseFloat(value)
   } else if (typeTransaction === 'withdrawal') {
