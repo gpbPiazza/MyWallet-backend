@@ -25,15 +25,17 @@
 Languages:<br>
 <p align="center">
      <img src="https://img.shields.io/badge/javascript%20-%23323330.svg?&style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
-     <img src="https://img.shields.io/badge/typescript%20-%23323330.svg?&style=for-the-badge&logo=typescript&logoColor=%23F7DF1E"/>
+     <img src="https://img.shields.io/badge/typescript%20-%23323330.svg?&style=for-the-badge&logo=typescript&logoColor=%2361DAFB"/>
 </p>
 
 
 The following tools and frameworks were used in the construction of the project:<br> 
+<p align="center">
     <img src="https://img.shields.io/badge/node.ts%20-%2343853D.svg?&style=for-the-badge&logo=node&logoColor=white"/>
     <img src='https://img.shields.io/badge/express%20-%2320232a.svg?&style=for-the-badge&logo=express&logoColor=%2361DAFB'/>
     <img src='https://img.shields.io/badge/yarn%20-%2320232a.svg?&style=for-the-badge&logo=yarn&logoColor=%2361DAFB'/>
     <img src='https://img.shields.io/badge/jest%20-%2320232a.svg?&style=for-the-badge&logo=jest&logoColor=%2361DAFB'/>
+ </p>
 
 ### Authors
 ---
